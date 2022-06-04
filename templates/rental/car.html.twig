@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Our Cars - {{ car.brand }} {{ car.model }}{% endblock %}
+
+{% block body %}
+    <h2 class="mb-5">
+        Rent a car <b>{{ car.brand }} {{ car.model }}</b> now!
+    </h2>
+
+    {% for message in app.flashes('notification') %}
+        <div class="alert alert-warning alert-dismissible fade show">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="bg-light shadow border rounded-lg p-4">
+                <h4 class="font-weight-light">
+                    Fill this form to check availability and get total price for <b>{{ car.brand }} {{ car.model }}</b>:
+                </h4>
+                {% form_theme rental_form 'bootstrap_5_layout.html.twig' %}
+                {{ form(rental_form) }}
+
+                <script>
+                </script>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6" id="rentTotalInfo">
+            {% if searchError is defined and searchError %}
+                <div class="alert alert-danger" role="alert">
+                    {{ searchError }}
+                </div>
+            {% endif %}
+
+            {% if searchError is not defined or not searchError %}{% endif %}
+            <div class="bg-light shadow border rounded-lg p-4">
+                <div class="row">
+                    <div>Rental days: <span class="days">{{ daysCount }}</span></div>
+                </div>
+                <div class="row">
+                    <div>Daily price: &euro;{{ car.averagePrice|number_format(2, '.', ',') }}</div>
+                </div>
+                <div class="row">
+                    <div style="font-weight: bold;">Total price: &euro;{{ car.price|number_format(2, '.', ',') }}</div>
+                </div>
+                <br />
+                <div class="row">
+                    <div>In stock: <span class="stock">{{ car.stock }}</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

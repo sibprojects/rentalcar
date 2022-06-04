@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Our Cars - {{ car.brand }} {{ car.model }}{% endblock %}
+
+{% block body %}
+    <h2 class="mb-5 text-success">
+        You rented a car <b>{{ car.brand }} {{ car.model }}</b> successfully!
+    </h2>
+
+    {% for message in app.flashes('notification') %}
+        <div class="alert alert-warning alert-dismissible fade show">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="bg-light shadow border rounded-lg p-4">
+                <h4 class="font-weight-light">Your rental data:</h4>
+                Your name: {{ rental.firstName }} {{ rental.lastName }}<br />
+                Dates: {{ rental.dateStart.format('Y-m-d') }} - {{ rental.dateEnd.format('Y-m-d') }}<br />
+                Email: {{ rental.email }}<br />
+                Phone: {{ rental.phone }}<br />
+                Drivers license: {{ rental.driversLicense }}<br />
+                Drivers license expiry date: {{ rental.driversLicenseExpiry.format('Y-m-d') }}<br />
+            </div>
+        </div>
+        {% if searchError is not defined or not searchError %}
+        <div class="col-12 col-lg-6">
+            <div class="bg-light shadow border rounded-lg p-4">
+                <div class="row">
+                    <div>Rental days: {{ daysCount }}</div>
+                </div>
+                <div class="row">
+                    <div>Daily price: &euro;{{ (rental.amount / daysCount)|number_format(2, '.', ',') }}</div>
+                </div>
+                <div class="row">
+                    <div style="font-weight: bold;">Total price: &euro;{{ rental.amount|number_format(2, '.', ',') }}</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

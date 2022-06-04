@@ -1,0 +1,7 @@
+{% for car in cars %}
+    <li class="nav-item">
+        <a class="nav-link {% if car.id==id %}active{% endif %}" href="{{ path('car', { id: car.id }) }}">
+            {{ car.brand }} {{ car.model }}
+        </a>
+    </li>
+{% endfor %}

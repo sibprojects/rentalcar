@@ -1,0 +1,57 @@
+@import './variables';
+@import '~bootstrap/scss/bootstrap';
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+main {
+    flex: 1;
+}
+
+// Darken buttons
+@each $color, $value in $theme-colors {
+    .btn-#{$color} {
+        @include button-variant($value, $value, darken($value, 10%));
+    }
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.lift {
+    transition: box-shadow .25s ease,transform .25s ease;
+
+    &:focus, &:hover {
+        box-shadow: 0 1rem 2.5rem rgba(22,28,45,.1),0 .5rem 1rem -.75rem rgba(22,28,45,.1)!important;
+        transform: translate3d(0, -4px, 0);
+    }
+}
+
+.card-body .btn.btn-blue{
+    color:#fff;
+}
+
+footer {
+    background: #18171b;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-warning {
+    color: #664d03;
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+}
+.alert-warning .alert-link {
+    color: #523e02;
+}
+

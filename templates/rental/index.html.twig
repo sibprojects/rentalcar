@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rent a car!{% endblock %}
+
+{% block body %}
+    {% if searchError is defined and searchError %}
+    <div class="alert alert-danger" role="alert">
+        {{ searchError }}
+    </div>
+    {% endif %}
+
+    <form action="{{ path('home') }}" methos="GET" class="form-inline row mb-2">
+        <div class="form-group col-auto">
+            <h2>Choose rental period:</h2>
+        </div>
+        <div class="form-group col-auto">
+            <input type="text" name="from_date" class="form-control js-datepicker" placeholder="From date" value="{{ app.request.get('from_date') }}" required>
+        </div>
+        <div class="form-group col-auto">
+            <input type="text" name="to_date" class="form-control js-datepicker" placeholder="To date" value="{{ app.request.get('to_date') }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary col-auto">Search</button>
+    </form>
+
+    {% if filter == null %}
+    <p>This is full list of our cars. To see availability and prices, please select your rental period above.</p>
+    {% endif %}
+
+    {% for row in cars|batch(3) %}
+        <div class="row">
+            {% for car in row %}
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <div class="card border shadow lift">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h4 class="font-weight-light">
+                                    {{ car.brand }} {{ car.model }}<br />
+                                </h4>
+                                {% if filter == null %}
+                                    <div>Price from: &euro;{{ car.priceSeasonLow|number_format(2, '.', ',') }} / day</div>
+                                {% else %}
+                                <div class="row">
+                                    <div class="col-6"><b>Total price: &euro;<span class="price">{{ car.price|number_format(2, '.', ',') }}</span></b></div>
+                                    <div class="col-6">Daily price: &euro;{{ car.averagePrice|number_format(2, '.', ',') }}</div>
+                                </div>
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-6">In stock: <span class="stock">{{ car.stock }}</span></div>
+                                    <div class="col-6">Rental days: <span class="days">{{ daysCount }}</span></div>
+                                </div>
+                            </div>
+
+                            {% if filter == null %}
+                            <a href="{{ path('car', { id: car.id }) }}" class="btn btn-sm btn-blue stretched-link">
+                                Rent this car now!
+                            </a>
+                            {% else %}
+                            <a href="{{ path('car', { id: car.id }) }}?from_date={{ app.request.get('from_date') }}&to_date={{ app.request.get('to_date') }}" class="btn btn-sm btn-blue stretched-link">
+                                Rent this car now!
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+{% endblock %}
